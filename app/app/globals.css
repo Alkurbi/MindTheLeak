@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+:root {
+  /* MindTheLeak — water-depth palette (deck-compatible: navy base, teal wave) */
+  --abyss: #0a1624; /* deepest page bg */
+  --navy: #0f1d2e; /* deck navy */
+  --navy-card: #14263b;
+  --navy-soft: #1b2e44;
+  --teal: #2ec4b6; /* موج — the brand wave */
+  --teal-dim: #1f8a80;
+  --fg: #f2f7f9; /* رغوة */
+  --muted: #9fb3c1; /* ضباب */
+  --danger: #ff6b6b; /* مرجان — the leak */
+  --amber: #f4b840; /* عنبر */
+}
+
+@theme inline {
+  --color-navy: var(--navy);
+  --color-navy-card: var(--navy-card);
+  --color-navy-soft: var(--navy-soft);
+  --color-teal: var(--teal);
+  --color-teal-dim: var(--teal-dim);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-danger: var(--danger);
+  --color-amber: var(--amber);
+  --font-sans: var(--font-readex), "Segoe UI", system-ui, sans-serif;
+  --font-display: var(--font-changa), var(--font-readex), sans-serif;
+}
+
+body {
+  /* depth: light near the surface, darker as you sink */
+  background:
+    radial-gradient(90rem 40rem at 50% -10rem, rgba(46, 196, 182, 0.07), transparent 60%),
+    linear-gradient(180deg, var(--navy) 0%, var(--abyss) 100%);
+  background-attachment: fixed;
+  color: var(--fg);
+}
+
+h1,
+h2,
+h3,
+.display {
+  font-family: var(--font-display);
+}
+
+/* Numbers inside Arabic text keep LTR ordering */
+.num {
+  direction: ltr;
+  unicode-bidi: embed;
+  display: inline-block;
+}
+
+::selection {
+  background: var(--teal);
+  color: var(--navy);
+}
+
+:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---- motion ---- */
+
+@keyframes drip {
+  0% { transform: translateY(0); opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateY(88px); opacity: 0; }
+}
+.drip { animation: drip 1.6s ease-in infinite; }
+
+@keyframes dripShort {
+  0% { transform: translateY(0); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateY(34px); opacity: 0; }
+}
+.drip-short { animation: dripShort 1.4s ease-in infinite; }
+
+@keyframes fillUp {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+.fill-up { transform-origin: bottom; animation: fillUp 2.2s ease-out forwards; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up { opacity: 0; animation: fadeUp 0.6s ease-out forwards; }
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.6); }
+  70% { transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.pop-in { opacity: 0; animation: popIn 0.4s ease-out forwards; }
+
+/* the liquid gauge's rolling surface */
+@keyframes wave {
+  from { transform: translateX(0); }
+  to { transform: translateX(-80px); }
+}
+.wave-a { animation: wave 3.2s linear infinite; }
+.wave-b { animation: wave 4.7s linear infinite reverse; }
+
+@keyframes rise {
+  from { transform: translateY(140px); }
+  to { transform: translateY(0); }
+}
+.water-rise { animation: rise 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+.gauge-arc { transition: stroke-dashoffset 1.4s cubic-bezier(0.22, 1, 0.36, 1); }
+
+details.leak-card > summary { list-style: none; cursor: pointer; }
+details.leak-card > summary::-webkit-details-marker { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .drip, .drip-short, .fill-up, .fade-up, .pop-in, .wave-a, .wave-b, .water-rise {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+  }
+  .fade-up, .pop-in { opacity: 1; }
+  * { transition-duration: 0.01ms !important; }
+}

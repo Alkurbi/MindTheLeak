@@ -1,0 +1,6 @@
+# personal bank statements — never commit
+/data/
+
+# playwright
+test-results/
+playwright-report/
