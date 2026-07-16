@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   XAxis, YAxis, Tooltip, ResponsiveContainer,
-  CartesianGrid, LineChart, Line, ReferenceLine, Legend,
+  CartesianGrid, LineChart, Line, Legend,
 } from "recharts";
 import type { AnalysisResult, ClassifiedTransaction } from "@/lib/types.ts";
 import type { Stats } from "@/lib/detect.ts";
@@ -820,10 +820,11 @@ function PlanSection({ result, savings }: { result: Result; savings: number | nu
   );
 
   const horizon = Math.min(36, Math.max(plan.shield.etaMonths ?? 12, 12) + 2);
+  // real projection: both lines start from the savings you have today
   const chart = Array.from({ length: horizon + 1 }, (_, m) => ({
     m,
-    بدون: Math.round(baselineSaving * m),
-    بخطتك: Math.round(withPlan * m),
+    بدون: Math.round(plan.savingsSar + baselineSaving * m),
+    بخطتك: Math.round(plan.savingsSar + withPlan * m),
   }));
 
   function toggle(kind: string) {
@@ -873,10 +874,10 @@ function PlanSection({ result, savings }: { result: Result; savings: number | nu
 
       {/* projection */}
       <p className="text-muted text-sm mb-2">
-        نمو مدخراتك شهراً بشهر: <span className="text-teal font-bold">الأخضر</span> بخطتك،
-        <span className="text-fg"> الرمادي</span> بدونها، و
-        <span className="text-amber font-bold">الأصفر</span> هو هدف صندوق الطوارئ. حين يلمسه الأخضر
-        يكتمل صندوقك.
+        نمو مدخراتك شهراً بشهر، بدءاً من رصيدك اليوم:{" "}
+        <span className="text-teal font-bold">الأخضر</span> بخطتك،
+        <span className="text-fg"> الرمادي المتقطع</span> بدونها. الفارق بينهما هو ما تكسبه من معالجة
+        التسريبات.
       </p>
       <div className="mb-6" dir="ltr">
         <ResponsiveContainer width="100%" height={240}>
@@ -890,12 +891,6 @@ function PlanSection({ result, savings }: { result: Result; savings: number | nu
               labelFormatter={(m) => `بعد ${nMonths(Number(m))}`}
             />
             <Legend />
-            <ReferenceLine
-              y={plan.shield.targetSar}
-              stroke="var(--amber)"
-              strokeDasharray="6 4"
-              label={{ value: `🛡 ${Math.round(plan.shield.targetSar).toLocaleString("en-US")}`, fill: "var(--amber)", fontSize: 12, position: "insideTopRight" }}
-            />
             <Line type="monotone" dataKey="بدون" stroke="var(--muted)" strokeWidth={2} dot={false} strokeDasharray="4 4" />
             <Line type="monotone" dataKey="بخطتك" stroke="var(--teal)" strokeWidth={3} dot={false} />
           </LineChart>
