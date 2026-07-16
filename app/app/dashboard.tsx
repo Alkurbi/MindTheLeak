@@ -242,7 +242,7 @@ function RunwayHero({ r, onSavings }: { r: ResilienceReport; onSavings: (n: numb
           <span className="num text-teal" data-testid="runway-months">
             {months.toFixed(1)}
           </span>{" "}
-          شهر، ثم يبدأ التسلسل
+          شهر، ثم تبدأ التزاماتك بالتوقف
         </p>
         {/* the equation, inspectable: savings (editable) ÷ floor = runway */}
         <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-3 gap-y-2 text-sm">
@@ -339,7 +339,7 @@ function BreakTimeline({ r }: { r: ResilienceReport }) {
 
   return (
     <div className="bg-navy-card/80 border border-danger/20 rounded-2xl p-6 mb-6 fade-up">
-      <h3 className="font-bold mb-1">ماذا ينكسر أولاً؟ التسلسل يوماً بيوم</h3>
+      <h3 className="font-bold mb-1">ما أول ما يتوقف؟ يوماً بعد يوم</h3>
       <p className="text-muted text-sm mb-6">{r.assumptionAr}</p>
       <ol className="relative border-r-2 border-navy-soft pr-6 mr-1.5 space-y-6">
         {r.breakEvents.map((e, i) => (
@@ -351,7 +351,7 @@ function BreakTimeline({ r }: { r: ResilienceReport }) {
             />
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-0.5">
               <span className="font-bold num">
-                {i === 0 ? "أول كسر: " : ""}بعد {nDays(e.dayOffset)}
+                {i === 0 ? "أول توقف: " : ""}بعد {nDays(e.dayOffset)}
               </span>
               <span className="text-muted text-xs num">{e.date}</span>
               <span className={`text-xs border rounded-full px-2 py-px ${tierChip[e.tier]}`}>
