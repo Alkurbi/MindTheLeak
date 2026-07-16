@@ -314,10 +314,10 @@ export function runEngine(input: ClassifiedTransaction[]): EngineOutput {
       case "late_night":
         return {
           kind: c.kind,
-          titleAr: "مشتريات ما بعد ١٠ مساءً",
-          detailAr: `${Math.round(own.length / months)} عملية شهرياً بعد الساعة ١٠ مساءً بقيمة ${fmt(
+          titleAr: "مشتريات ما بعد 10 مساءً",
+          detailAr: `${Math.round(own.length / months)} عملية شهرياً بعد الساعة 10 مساءً بقيمة ${fmt(
             cost
-          )} ر.س شهرياً. ٣١٪ ممن يشترون في هذا الوقت لا يتذكرون الشراء أصلاً في اليوم التالي.`,
+          )} ر.س شهرياً. 31٪ ممن يشترون في هذا الوقت لا يتذكرون الشراء أصلاً في اليوم التالي.`,
           monthlyCostSar: cost,
           transactions: ids,
           severity: cost > 300 ? "high" : "medium",
@@ -337,7 +337,7 @@ export function runEngine(input: ClassifiedTransaction[]): EngineOutput {
         return {
           kind: c.kind,
           titleAr: "حرق ما بعد الراتب",
-          detailAr: `${c.meta.sharePct}٪ من إنفاقك الاستهلاكي يحدث في أول ٥ أيام بعد الراتب، بزيادة ${fmt(
+          detailAr: `${c.meta.sharePct}٪ من إنفاقك الاستهلاكي يحدث في أول 5 أيام بعد الراتب، بزيادة ${fmt(
             cost
           )} ر.س شهرياً فوق معدلك الطبيعي. هذا هو «تأثير يوم الراتب» الموثّق علمياً، ويحدث حتى لأصحاب الأرصدة المرتفعة.`,
           monthlyCostSar: cost,
@@ -348,7 +348,7 @@ export function runEngine(input: ClassifiedTransaction[]): EngineOutput {
         return {
           kind: c.kind,
           titleAr: "نزيف المبالغ الصغيرة",
-          detailAr: `${c.meta.perMonth} عملية صغيرة (أقل من ١٠٠ ر.س) شهرياً، مجموعها ${fmt(
+          detailAr: `${c.meta.perMonth} عملية صغيرة (أقل من 100 ر.س) شهرياً، مجموعها ${fmt(
             cost
           )} ر.س شهرياً، تبدو تافهة، لكنها ${fmt(cost * 12)} ر.س في السنة.`,
           monthlyCostSar: cost,

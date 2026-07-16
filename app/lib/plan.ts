@@ -65,7 +65,7 @@ const EFFORTS: Record<string, Effort> = {
 const FIX_META: Record<string, { effort: keyof typeof EFFORTS; howAr: string }> = {
   forgotten_subscription: {
     effort: "instant",
-    howAr: "افتح إعدادات الاشتراكات في جوالك الآن وألغِ كل ما لم تفتحه آخر ٣٠ يوماً.",
+    howAr: "افتح إعدادات الاشتراكات في جوالك الآن وألغِ كل ما لم تفتحه آخر 30 يوماً.",
   },
   bank_fees: {
     effort: "instant",
@@ -77,7 +77,7 @@ const FIX_META: Record<string, { effort: keyof typeof EFFORTS; howAr: string }> 
   },
   late_night: {
     effort: "rule",
-    howAr: "قاعدة الـ ١٢ ساعة: أي شراء بعد ١٠ مساءً ينتظر إلى الصباح. إن بقيت تريده، اشتره.",
+    howAr: "قاعدة الـ 12 ساعة: أي شراء بعد 10 مساءً ينتظر إلى الصباح. إن بقيت تريده، اشتره.",
   },
   micro_leak: {
     effort: "rule",

@@ -146,9 +146,9 @@ export default function Home() {
             style={{ animationDelay: "0.5s" }}
           >
             {[
-              { n: "١٫٦٪", label: "معدل ادخار الأسر السعودية", sub: "المستهدف: ١٠٪" },
-              { n: "٤٥٪", label: "لا يدخرون شيئاً", sub: "من دخلهم الشهري" },
-              { n: "+٣٧٪", label: "قفزة الإنفاق", sub: "في أسبوع الراتب" },
+              { n: "1.6٪", label: "معدل ادخار الأسر السعودية", sub: "المستهدف: 10٪" },
+              { n: "45٪", label: "لا يدخرون شيئاً", sub: "من دخلهم الشهري" },
+              { n: "+37٪", label: "قفزة الإنفاق", sub: "في أسبوع الراتب" },
             ].map((s) => (
               <div key={s.label} className="text-center lg:text-right">
                 <div className="display text-3xl font-bold text-danger leading-none mb-1">{s.n}</div>
@@ -164,12 +164,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* how it works، the same ٠١٠٢٠٣ language as the dashboard */}
+      {/* how it works، the same 010203 language as the dashboard */}
       <section className="border-t border-navy-soft/60">
         <div className="max-w-6xl mx-auto px-6 py-10 grid sm:grid-cols-3 gap-8">
           {[
             { n: "٠١", t: "ارفع كشف حسابك", d: "ملف CSV من تطبيق بنكك، بدون أي بيانات دخول" },
-            { n: "٠٢", t: "نشخّص سلوكك", d: "٧ كواشف تسريب مبنية على أبحاث محكّمة، وذكاء اصطناعي يقرأ ما بين المعاملات" },
+            { n: "٠٢", t: "نشخّص سلوكك", d: "7 كواشف تسريب مبنية على أبحاث محكّمة، وذكاء اصطناعي يقرأ ما بين المعاملات" },
             { n: "٠٣", t: "تستلم خطتك", d: "مرتبطة بهدفك أنت، بأرقام توفير واقعية، ونتابع تقدمك مع كل كشف جديد" },
           ].map((s) => (
             <div key={s.n} className="flex gap-4 items-start">
@@ -288,7 +288,7 @@ function GoalStep({ onConfirm }: { onConfirm: (goals: GoalInput[] | null) => voi
             ))}
           </div>
           <p className={`text-sm font-bold num mb-6 ${sum === 100 ? "text-teal" : "text-danger"}`}>
-            المجموع: {sum}٪{sum !== 100 && "، يجب أن يساوي ١٠٠٪"}
+            المجموع: {sum}٪{sum !== 100 && "، يجب أن يساوي 100٪"}
           </p>
           <div className="flex gap-4 justify-center">
             <button

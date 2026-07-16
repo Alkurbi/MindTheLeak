@@ -20,6 +20,18 @@ export type Result = AnalysisResult & { stats: Stats };
 const round = (n: number) => Math.round(n).toLocaleString("en-US");
 const sar = (n: number) => `${round(n)} ر.س`;
 
+// Arabic count agreement: 1 singular, 2 dual, 3–10 plural, 11+ singular-accusative.
+function arCount(n: number, one: string, two: string, few: string, many: string): string {
+  n = Math.round(n);
+  if (n === 1) return one;
+  if (n === 2) return two;
+  if (n >= 3 && n <= 10) return `${n} ${few}`;
+  return `${n} ${many}`;
+}
+const nMonths = (n: number) => arCount(n, "شهر واحد", "شهران", "أشهر", "شهراً");
+const nDays = (n: number) => arCount(n, "يوم واحد", "يومان", "أيام", "يوماً");
+const nFixes = (n: number) => arCount(n, "إصلاح واحد", "إصلاحان", "إصلاحات", "إصلاحاً");
+
 // ?static=1 (or automation) → skip animations, render final state immediately
 function isStatic() {
   return (
@@ -73,7 +85,7 @@ export default function Dashboard({ result, onReset }: { result: Result; onReset
 
       <DeltaBanner result={result} />
 
-      {/* ٠١ الأمان المالي، the resilience model: what your life costs, how long you survive */}
+      {/* 01 الأمان المالي، the resilience model: what your life costs, how long you survive */}
       <Stage n="٠١" title="الأمان المالي" sub="لو انقطع دخلك اليوم، كم شهر تكفيك مدخراتك؟" />
       <RunwayHero r={resilience} onSavings={updateSavings} />
       <BreakTimeline r={resilience} />
@@ -81,7 +93,7 @@ export default function Dashboard({ result, onReset }: { result: Result; onReset
 
       <DripDivider />
 
-      {/* ٠٢ التشخيص، unboxed hero: the vessel and the verdict */}
+      {/* 02 التشخيص، unboxed hero: the vessel and the verdict */}
       <Stage n="٠٢" title="التشخيص" sub="ماذا وجدنا في كشف حسابك" />
       <section className="grid md:grid-cols-[auto_1fr] gap-8 md:gap-12 items-center mb-10">
         <div className="flex flex-col items-center fade-up mx-auto">
@@ -110,7 +122,7 @@ export default function Dashboard({ result, onReset }: { result: Result; onReset
 
       <DripDivider />
 
-      {/* ٠٣ الأدلة */}
+      {/* 03 الأدلة */}
       <Stage n="٠٣" title="الأدلة" sub="ما وراء الأرقام، كل رقم يمكنك فتحه والتحقق منه" />
       <div className="grid md:grid-cols-2 gap-6 mb-6">
         <div className="bg-navy-card/80 border border-teal/10 rounded-2xl p-6 fade-up">
@@ -120,7 +132,7 @@ export default function Dashboard({ result, onReset }: { result: Result; onReset
         </div>
         <div className="bg-navy-card/80 border border-teal/10 rounded-2xl p-6 fade-up" style={{ animationDelay: "0.1s" }}>
           <h3 className="font-bold mb-1">الإنفاق الشهري حسب الفئة</h3>
-          <p className="text-muted text-sm mb-4">متوسط {result.stats.months} شهر</p>
+          <p className="text-muted text-sm mb-4">متوسط {nMonths(result.stats.months)}</p>
           <CategoryChart categoryMonthly={result.stats.categoryMonthly} />
         </div>
       </div>
@@ -145,7 +157,7 @@ export default function Dashboard({ result, onReset }: { result: Result; onReset
 
       <DripDivider />
 
-      {/* ٠٤ الخطة */}
+      {/* 04 الخطة */}
       <Stage n="٠٤" title="الخطة" sub="من التشخيص إلى العلاج، أي كوب نملأ أولاً" />
       <PlanSection result={result} savings={savings} />
 
@@ -213,7 +225,7 @@ function DripDivider() {
   );
 }
 
-// ---- ٠١ الأمان المالي: crisis runway hero، savings ÷ floor, all inputs visible ----
+// ---- 01 الأمان المالي: crisis runway hero، savings ÷ floor, all inputs visible ----
 
 function RunwayHero({ r, onSavings }: { r: ResilienceReport; onSavings: (n: number) => void }) {
   const months = r.floorSar > 0 ? r.runwayMonths : 0;
@@ -315,7 +327,7 @@ function RunwayGauge({ months }: { months: number }) {
   );
 }
 
-// ---- ٠١ الأمان المالي: the cascade made concrete، which obligation breaks, when ----
+// ---- 01 الأمان المالي: the cascade made concrete، which obligation breaks, when ----
 
 function BreakTimeline({ r }: { r: ResilienceReport }) {
   if (!r.breakEvents.length) return null;
@@ -339,7 +351,7 @@ function BreakTimeline({ r }: { r: ResilienceReport }) {
             />
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-0.5">
               <span className="font-bold num">
-                {i === 0 ? "أول كسر: " : ""}بعد {e.dayOffset} يوماً
+                {i === 0 ? "أول كسر: " : ""}بعد {nDays(e.dayOffset)}
               </span>
               <span className="text-muted text-xs num">{e.date}</span>
               <span className={`text-xs border rounded-full px-2 py-px ${tierChip[e.tier]}`}>
@@ -357,13 +369,13 @@ function BreakTimeline({ r }: { r: ResilienceReport }) {
   );
 }
 
-// ---- ٠١ الأمان المالي: the model's inputs, inspectable، obligations, floor, confidence ----
+// ---- 01 الأمان المالي: the model's inputs, inspectable، obligations, floor, confidence ----
 
 function cadenceAr(days: number): string {
   if (days >= 25 && days <= 35) return "شهري";
   if (days >= 330 && days <= 400) return "سنوي";
   if (days >= 6 && days <= 8) return "أسبوعي";
-  return `كل ${Math.round(days)} يوماً`;
+  return `كل ${nDays(days)}`;
 }
 
 function ObligationsPanel({ r }: { r: ResilienceReport }) {
@@ -834,10 +846,10 @@ function PlanSection({ result, savings }: { result: Result; savings: number | nu
 
   return (
     <div className="bg-navy-card rounded-2xl p-8 mb-6 fade-up border border-teal/40">
-      <h2 className="text-xl font-bold mb-1">خطة التوفير، الصندوق أولاً، ثم أهدافك 🛡</h2>
+      <h2 className="text-xl font-bold mb-1">خطة التوفير: صندوق الطوارئ أولاً، ثم أهدافك 🛡</h2>
       <p className="text-muted text-sm mb-6">
-        صندوق الطوارئ هدفك الأول دائماً: يأخذ ٧٠٪ من ادخارك حتى يكتمل، وأهدافك تتقاسم الباقي
-        بنسبك أنت. فعّل أو عطّل كل إصلاح وشاهد أثره فوراً، الأرقام واقعية، لا نَعِد بالمستحيل.
+        يُموَّل الصندوق أولاً بـ70٪ من ادخارك حتى يكتمل، ثم تتقاسم أهدافك الباقي بالنسب التي
+        تحددها. فعّل أو عطّل أي إصلاح وشاهد أثره فوراً. الأرقام واقعية ولا نَعِد بالمستحيل.
       </p>
 
       <ShieldGoalsPanel
@@ -853,12 +865,10 @@ function PlanSection({ result, savings }: { result: Result; savings: number | nu
       />
 
       <p className="text-muted text-sm mb-6 text-center num" data-testid="plan-summary">
-        ادخارك الشهري بخطتك: {sar(withPlan)}، منها +{sar(recovered)} توفير واقعي من{" "}
-        {selected.size} إصلاحات مفعّلة ={" "}
-        <b className="text-teal">
-          +{Math.round(runwayDaysBought(recovered, plan.floorSar))} يوم أمان إضافي
-        </b>{" "}
-        كل شهر
+        ادخارك الشهري بخطتك {sar(withPlan)}، منها {sar(recovered)} توفير فعلي من{" "}
+        {nFixes(selected.size)} مفعّلة. هذا يضيف{" "}
+        <b className="text-teal">{nDays(runwayDaysBought(recovered, plan.floorSar))}</b> إلى رصيد
+        أمانك كل شهر
       </p>
 
       {/* projection */}
@@ -871,7 +881,7 @@ function PlanSection({ result, savings }: { result: Result; savings: number | nu
             <Tooltip
               contentStyle={{ background: "var(--navy-soft)", border: "1px solid var(--teal)", borderRadius: 8 }}
               formatter={(v, name) => [`${Number(v).toLocaleString("en-US")} ر.س`, name]}
-              labelFormatter={(m) => `بعد ${m} شهراً`}
+              labelFormatter={(m) => `بعد ${nMonths(Number(m))}`}
             />
             <Legend />
             <ReferenceLine
@@ -921,10 +931,11 @@ function PlanSection({ result, savings }: { result: Result; savings: number | nu
                 </div>
                 <p className="text-muted text-sm">{f.howAr}</p>
                 {/* the leak, re-priced in survival time، beside the SAR figure, never instead */}
-                <p className={`text-xs mt-1 ${on ? "text-teal" : "text-muted"}`}>
-                  {f.titleAr} = {Math.round(runwayDaysBought(f.recoverableSar, plan.floorSar))} يوم
-                  إضافي من الأمان شهرياً
-                </p>
+                {Math.round(runwayDaysBought(f.recoverableSar, plan.floorSar)) > 0 && (
+                  <p className={`text-xs mt-1 ${on ? "text-teal" : "text-muted"}`}>
+                    يضيف {nDays(runwayDaysBought(f.recoverableSar, plan.floorSar))} إلى أمانك شهرياً
+                  </p>
+                )}
               </div>
               <div className="text-left shrink-0">
                 <div className={`font-bold num ${on ? "text-teal" : "text-muted"}`}>
@@ -984,9 +995,9 @@ function ShieldGoalsPanel({
       <div className="flex flex-wrap items-center gap-3 mb-2">
         <span className="text-2xl">🛡</span>
         <div className="flex-1 min-w-40">
-          <div className="font-bold">صندوق الطوارئ، الهدف رقم ١ دائماً</div>
+          <div className="font-bold">صندوق الطوارئ · الهدف الأول</div>
           <div className="text-muted text-xs">
-            <span className="num">{plan.shield.months}</span> أشهر من مصاريفك الأساسية ={" "}
+            {nMonths(plan.shield.months)} من مصاريفك الأساسية ={" "}
             <span className="num">{sar(plan.shield.targetSar)}</span>
           </div>
         </div>
@@ -1019,8 +1030,8 @@ function ShieldGoalsPanel({
           <>
             مموّل <span className="num">{Math.round(plan.shield.fundedPct)}٪</span> من سيولتك الحالية
             {plan.shield.etaMonths !== null && (
-              <>، يكتمل خلال <span className="num">{plan.shield.etaMonths}</span> شهراً
-              (يأخذ ٧٠٪ من ادخارك، وأهدافك تتقاسم ٣٠٪ الباقية)</>
+              <>، يكتمل خلال {nMonths(plan.shield.etaMonths)} (يأخذ 70٪ من ادخارك،
+              وأهدافك تتقاسم 30٪ الباقية)</>
             )}
           </>
         )}
@@ -1039,8 +1050,8 @@ function ShieldGoalsPanel({
                 <span className="w-40 text-left text-xs">
                   {g.etaMonths !== null ? (
                     <>
-                      <span className="text-teal font-bold num">{g.etaMonths}</span> شهراً، {" "}
-                      <span className="num">{sar(g.monthlySar)}</span>/شهر الآن
+                      <span className="text-teal font-bold">{nMonths(g.etaMonths)}</span>، {" "}
+                      <span className="num">{sar(g.monthlySar)}</span>/شهر
                     </>
                   ) : (
                     <span className="text-danger">لن يكتمل بهذا الإيقاع</span>
@@ -1128,7 +1139,7 @@ function ShieldGoalsPanel({
             <button onClick={() => setEditing(false)} className="text-muted text-sm hover:text-fg">
               إلغاء
             </button>
-            {sum !== 100 && <span className="text-muted text-xs">النسب يجب أن تساوي ١٠٠٪</span>}
+            {sum !== 100 && <span className="text-muted text-xs">النسب يجب أن تساوي 100٪</span>}
           </div>
         </div>
       )}
