@@ -872,6 +872,12 @@ function PlanSection({ result, savings }: { result: Result; savings: number | nu
       </p>
 
       {/* projection */}
+      <p className="text-muted text-sm mb-2">
+        نمو مدخراتك شهراً بشهر: <span className="text-teal font-bold">الأخضر</span> بخطتك،
+        <span className="text-fg"> الرمادي</span> بدونها، و
+        <span className="text-amber font-bold">الأصفر</span> هو هدف صندوق الطوارئ. حين يلمسه الأخضر
+        يكتمل صندوقك.
+      </p>
       <div className="mb-6" dir="ltr">
         <ResponsiveContainer width="100%" height={240}>
           <LineChart data={chart} margin={{ top: 8, right: 12, left: 12, bottom: 4 }}>
