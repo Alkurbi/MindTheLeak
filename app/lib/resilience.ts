@@ -1,7 +1,7 @@
 // The resilience engine: learns load-bearing obligations from classified
 // transactions and computes the survival floor, crisis runway, what-breaks
 // timeline, emergency-shield sizing, and multi-goal allocation.
-// Pure — the same code runs server-side (narrative) and client-side (live edits).
+// Pure، the same code runs server-side (narrative) and client-side (live edits).
 // All constants the map tickets may tune live at the top of this file.
 
 import type { ClassifiedTransaction } from "./types.ts";
@@ -10,9 +10,9 @@ import type { Category } from "./classify.ts";
 export type Tier = "survival" | "committed";
 
 // Categories that produce obligations, and their criticality tier.
-// Comfort/discretionary categories never become obligations — in a crisis
+// Comfort/discretionary categories never become obligations، in a crisis
 // they stop immediately (the burn model's stated assumption).
-// ponytail: the spec's four tiers folded to two — comfort/discretionary only
+// ponytail: the spec's four tiers folded to two، comfort/discretionary only
 // ever "stop immediately", so they need no map entries; add them if a UI labels them.
 const OBLIGATION_TIER: Partial<Record<Category, Tier>> = {
   rent: "survival",
@@ -26,16 +26,16 @@ const OBLIGATION_TIER: Partial<Record<Category, Tier>> = {
   remittance: "committed",
 };
 
-const TIER_AR: Record<Tier, string> = { survival: "بقاء", committed: "التزام" };
+const TIER_AR: Record<Tier, string> = { survival: "أساسي", committed: "التزام" };
 
 const CONSEQUENCE_AR: Partial<Record<Category, string>> = {
-  insurance: "ينقطع التأمين — تصبح مكشوفاً أمام أي حادث",
-  installments: "تعثر القسط — يبدأ الأثر على سجلك الائتماني",
-  rent: "الإيجار لا يُدفع — خطر السكن",
+  insurance: "ينقطع التأمين، تصبح مكشوفاً أمام أي حادث",
+  installments: "تعثر القسط، يبدأ الأثر على سجلك الائتماني",
+  rent: "الإيجار لا يُدفع، خطر السكن",
   utilities_bills: "انقطاع الكهرباء والماء",
   telecom: "انقطاع الاتصال والإنترنت",
   health: "توقف الدواء والرعاية الصحية",
-  government_fees: "رسوم حكومية متأخرة — غرامات تتراكم",
+  government_fees: "رسوم حكومية متأخرة، غرامات تتراكم",
   education: "تعثر الرسوم الدراسية",
   remittance: "توقف دعم العائلة",
 };
@@ -52,7 +52,7 @@ export type Obligation = {
   amountSar: number; // median observed payment
   cadenceDays: number; // median observed gap between payments
   monthlySar: number; // amortized monthly equivalent
-  lastDate: string; // ISO — anchors due-date projection
+  lastDate: string; // ISO، anchors due-date projection
   hits: number;
 };
 
@@ -80,7 +80,7 @@ export type ResilienceReport = {
   dailyBurnSar: number;
   savingsSar: number;
   runwayMonths: number; // savings ÷ floor
-  asOf: string; // statement end date — the simulation's "today"
+  asOf: string; // statement end date، the simulation's "today"
   breakEvents: BreakEvent[];
   confidenceAr: string;
   assumptionAr: string; // the burn model's stated assumption
@@ -144,7 +144,7 @@ export function buildResilience(
       tierAr: TIER_AR[tier],
       amountSar: amount,
       cadenceDays: cadence,
-      // near-monthly bills are calendar-monthly in real life — don't inflate by 30.44/28
+      // near-monthly bills are calendar-monthly in real life، don't inflate by 30.44/28
       monthlySar: cadence >= 25 && cadence <= 35 ? amount : amount * (DAYS_PER_MONTH / cadence),
       lastDate: ts[ts.length - 1].date,
       hits: ts.length,
@@ -212,10 +212,10 @@ export function buildResilience(
   const histMonths = Math.round(monthsOfHistory);
   const confidenceAr =
     histMonths < 3
-      ? `ثقة منخفضة — هذا النموذج تعلّم من ${histMonths <= 1 ? "شهر واحد" : "شهرين"} فقط من كشفك. ارفع تاريخاً أطول لأرقام أدق.`
+      ? `ثقة منخفضة، هذا النموذج تعلّم من ${histMonths <= 1 ? "شهر واحد" : "شهرين"} فقط من كشفك. ارفع تاريخاً أطول لأرقام أدق.`
       : histMonths < 6
-        ? `ثقة متوسطة — تعلّمنا من ${histMonths} أشهر من كشفك.`
-        : `ثقة جيدة — تعلّمنا من ${histMonths} شهراً من كشفك.`;
+        ? `ثقة متوسطة، تعلّمنا من ${histMonths} أشهر من كشفك.`
+        : `ثقة جيدة، تعلّمنا من ${histMonths} شهراً من كشفك.`;
 
   // ---- shield & goal allocation
   const shieldMonths = Math.min(6, Math.max(1, opts.shieldMonths ?? SHIELD_DEFAULT_MONTHS));
@@ -257,7 +257,7 @@ export function buildResilience(
     breakEvents,
     confidenceAr,
     assumptionAr:
-      "افتراض النموذج: في الأزمة يستمر دفع التزامات البقاء والالتزامات الثابتة والتموينات الأساسية، ويتوقف كل إنفاق اختياري فوراً — وما ينكسر يتوقف دفعه ويستمر الباقي.",
+      "افتراض النموذج: في الأزمة يستمر دفع الالتزامات الأساسية والالتزامات الثابتة والتموينات الأساسية، ويتوقف كل إنفاق اختياري فوراً، وما ينكسر يتوقف دفعه ويستمر الباقي.",
     shield: {
       months: shieldMonths,
       targetSar: shieldTarget,

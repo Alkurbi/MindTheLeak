@@ -37,7 +37,7 @@ function useCountUp(target: number, ms = 1400) {
       return;
     }
     let raf = 0;
-    let t0: number | null = null; // first rAF timestamp — same clock as later ticks
+    let t0: number | null = null; // first rAF timestamp، same clock as later ticks
     const tick = (t: number) => {
       if (t0 === null) t0 = t;
       const p = Math.min(1, Math.max(0, (t - t0) / ms));
@@ -73,15 +73,15 @@ export default function Dashboard({ result, onReset }: { result: Result; onReset
 
       <DeltaBanner result={result} />
 
-      {/* ٠١ الصمود — the resilience model: what your life costs, how long you survive */}
-      <Stage n="٠١" title="الصمود" sub="لو انقطع دخلك اليوم — كم تصمد فواتيرك؟" />
+      {/* ٠١ الأمان المالي، the resilience model: what your life costs, how long you survive */}
+      <Stage n="٠١" title="الأمان المالي" sub="لو انقطع دخلك اليوم، كم شهر تكفيك مدخراتك؟" />
       <RunwayHero r={resilience} onSavings={updateSavings} />
       <BreakTimeline r={resilience} />
       <ObligationsPanel r={resilience} />
 
       <DripDivider />
 
-      {/* ٠٢ التشخيص — unboxed hero: the vessel and the verdict */}
+      {/* ٠٢ التشخيص، unboxed hero: the vessel and the verdict */}
       <Stage n="٠٢" title="التشخيص" sub="ماذا وجدنا في كشف حسابك" />
       <section className="grid md:grid-cols-[auto_1fr] gap-8 md:gap-12 items-center mb-10">
         <div className="flex flex-col items-center fade-up mx-auto">
@@ -96,7 +96,7 @@ export default function Dashboard({ result, onReset }: { result: Result; onReset
           <div className="flex flex-wrap justify-center md:justify-start gap-x-10 gap-y-3">
             <InlineStat label="دخلك الشهري" value={result.monthlyIncomeSar} />
             <InlineStat label="التسريب الشهري" value={result.monthlyLeakSar} tone="danger" />
-            <InlineStat label="قابل للاسترداد سنوياً" value={result.monthlyLeakSar * 12} tone="teal" />
+            <InlineStat label="توفير ممكن سنوياً" value={result.monthlyLeakSar * 12} tone="teal" />
           </div>
         </div>
       </section>
@@ -111,11 +111,11 @@ export default function Dashboard({ result, onReset }: { result: Result; onReset
       <DripDivider />
 
       {/* ٠٣ الأدلة */}
-      <Stage n="٠٣" title="الأدلة" sub="الأنماط خلف الأرقام — كل رقم يمكنك فتحه والتحقق منه" />
+      <Stage n="٠٣" title="الأدلة" sub="ما وراء الأرقام، كل رقم يمكنك فتحه والتحقق منه" />
       <div className="grid md:grid-cols-2 gap-6 mb-6">
         <div className="bg-navy-card/80 border border-teal/10 rounded-2xl p-6 fade-up">
           <h3 className="font-bold mb-1">منحنى الراتب</h3>
-          <p className="text-muted text-sm mb-4">الإنفاق حسب الأيام بعد استلام الراتب — لاحظ الانفجار</p>
+          <p className="text-muted text-sm mb-4">الإنفاق حسب الأيام بعد استلام الراتب، لاحظ الانفجار</p>
           <PaydayCurve transactions={result.transactions} salaryDates={result.stats.salaryDates} />
         </div>
         <div className="bg-navy-card/80 border border-teal/10 rounded-2xl p-6 fade-up" style={{ animationDelay: "0.1s" }}>
@@ -128,14 +128,14 @@ export default function Dashboard({ result, onReset }: { result: Result; onReset
       <div className="bg-navy-card/80 border border-teal/10 rounded-2xl p-6 mb-6 fade-up">
         <h3 className="font-bold mb-1">متى تتخذ قراراتك المتهورة؟</h3>
         <p className="text-muted text-sm mb-5">
-          كثافة الإنفاق الاستهلاكي حسب اليوم والوقت — الخلية الأكثر سخونة هي نقطة ضعفك
+          كثافة الإنفاق الاستهلاكي حسب اليوم والوقت، الخلية الأكثر سخونة هي نقطة ضعفك
         </p>
         <Heatmap transactions={result.transactions} />
       </div>
 
       <h3 className="font-bold text-lg mb-1">التسريبات المكتشفة</h3>
       <p className="text-muted text-sm mb-4">
-        كل ريال محسوب مرة واحدة فقط — اضغط على أي تسريب لترى المعاملات التي تقف خلفه
+        كل ريال محسوب مرة واحدة فقط، اضغط على أي تسريب لترى المعاملات التي تقف خلفه
       </p>
       <div className="grid md:grid-cols-2 gap-4 mb-4">
         {result.leaks.map((leak, i) => (
@@ -146,7 +146,7 @@ export default function Dashboard({ result, onReset }: { result: Result; onReset
       <DripDivider />
 
       {/* ٠٤ الخطة */}
-      <Stage n="٠٤" title="الخطة" sub="من التشخيص إلى الفعل — أي كوب نملأ أولاً" />
+      <Stage n="٠٤" title="الخطة" sub="من التشخيص إلى العلاج، أي كوب نملأ أولاً" />
       <PlanSection result={result} savings={savings} />
 
       {/* narrative */}
@@ -187,7 +187,7 @@ export default function Dashboard({ result, onReset }: { result: Result; onReset
   );
 }
 
-// stage markers: the dashboard is a real sequence — diagnosis → evidence → plan
+// stage markers: the dashboard is a real sequence، diagnosis → evidence → plan
 function Stage({ n, title, sub }: { n: string; title: string; sub?: string }) {
   return (
     <div className="flex items-center gap-4 mb-6 fade-up">
@@ -213,7 +213,7 @@ function DripDivider() {
   );
 }
 
-// ---- ٠١ الصمود: crisis runway hero — savings ÷ floor, all inputs visible ----
+// ---- ٠١ الأمان المالي: crisis runway hero، savings ÷ floor, all inputs visible ----
 
 function RunwayHero({ r, onSavings }: { r: ResilienceReport; onSavings: (n: number) => void }) {
   const months = r.floorSar > 0 ? r.runwayMonths : 0;
@@ -230,7 +230,7 @@ function RunwayHero({ r, onSavings }: { r: ResilienceReport; onSavings: (n: numb
           <span className="num text-teal" data-testid="runway-months">
             {months.toFixed(1)}
           </span>{" "}
-          شهر — ثم يبدأ التسلسل
+          شهر، ثم يبدأ التسلسل
         </p>
         {/* the equation, inspectable: savings (editable) ÷ floor = runway */}
         <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-3 gap-y-2 text-sm">
@@ -244,12 +244,12 @@ function RunwayHero({ r, onSavings }: { r: ResilienceReport; onSavings: (n: numb
             aria-label="السيولة المتاحة"
             className="num bg-navy-card border border-navy-soft rounded-lg px-3 py-1.5 w-32 text-center font-bold focus:border-teal outline-none"
           />
-          <span className="text-muted">ر.س ÷ أرضية البقاء</span>
+          <span className="text-muted">ر.س ÷ مصاريفك الأساسية</span>
           <span className="font-bold num">{sar(r.floorSar)}</span>
           <span className="text-muted">شهرياً</span>
         </div>
         <p className="text-muted text-xs mt-3">
-          الرصيد مأخوذ من آخر رصيد في كشفك ({r.asOf}) — عدّله إن كانت لديك سيولة خارج هذا الحساب
+          الرصيد مأخوذ من آخر رصيد في كشفك ({r.asOf})، عدّله إن كانت لديك سيولة خارج هذا الحساب
         </p>
       </div>
     </section>
@@ -315,7 +315,7 @@ function RunwayGauge({ months }: { months: number }) {
   );
 }
 
-// ---- ٠١ الصمود: the cascade made concrete — which obligation breaks, when ----
+// ---- ٠١ الأمان المالي: the cascade made concrete، which obligation breaks, when ----
 
 function BreakTimeline({ r }: { r: ResilienceReport }) {
   if (!r.breakEvents.length) return null;
@@ -323,7 +323,7 @@ function BreakTimeline({ r }: { r: ResilienceReport }) {
     survival: "bg-danger/15 text-danger border-danger/40",
     committed: "bg-amber/15 text-amber border-amber/40",
   } as const;
-  const tierAr = { survival: "بقاء", committed: "التزام" } as const;
+  const tierAr = { survival: "أساسي", committed: "التزام" } as const;
 
   return (
     <div className="bg-navy-card/80 border border-danger/20 rounded-2xl p-6 mb-6 fade-up">
@@ -347,7 +347,7 @@ function BreakTimeline({ r }: { r: ResilienceReport }) {
               </span>
             </div>
             <div className="text-sm mb-0.5">
-              {e.labelAr} — <span className="num">{sar(e.amountSar)}</span> لا تُدفع
+              {e.labelAr}، <span className="num">{sar(e.amountSar)}</span> لا تُدفع
             </div>
             <p className="text-danger/90 text-sm">{e.consequenceAr}</p>
           </li>
@@ -357,7 +357,7 @@ function BreakTimeline({ r }: { r: ResilienceReport }) {
   );
 }
 
-// ---- ٠١ الصمود: the model's inputs, inspectable — obligations, floor, confidence ----
+// ---- ٠١ الأمان المالي: the model's inputs, inspectable، obligations, floor, confidence ----
 
 function cadenceAr(days: number): string {
   if (days >= 25 && days <= 35) return "شهري";
@@ -375,14 +375,14 @@ function ObligationsPanel({ r }: { r: ResilienceReport }) {
   return (
     <div className="bg-navy-card/80 border border-teal/10 rounded-2xl p-6 mb-6 fade-up">
       <div className="flex flex-wrap items-baseline justify-between gap-3 mb-1">
-        <h3 className="font-bold">أرضية البقاء — ماذا تكلف حياتك في حدها الأدنى؟</h3>
+        <h3 className="font-bold">مصاريفك الأساسية، ماذا تكلف حياتك في حدها الأدنى؟</h3>
         <div className="text-left">
           <span className="display text-2xl font-bold text-teal num">{sar(r.floorSar)}</span>
           <span className="text-muted text-sm"> / شهر</span>
         </div>
       </div>
       <p className="text-muted text-sm mb-5">
-        التزاماتك الحاملة تعلمناها من كشفك نفسه — المبلغ والإيقاع من التاريخ الفعلي، لا من تقديرك
+        التزاماتك الحاملة تعلمناها من كشفك نفسه، المبلغ والإيقاع من التاريخ الفعلي، لا من تقديرك
       </p>
 
       <div className="space-y-2">
@@ -401,7 +401,7 @@ function ObligationsPanel({ r }: { r: ResilienceReport }) {
         {r.groceriesMonthlySar > 0 && (
           <div className="flex items-center gap-3 text-sm">
             <span className="text-xs border rounded-full px-2 py-px shrink-0 bg-danger/15 text-danger border-danger/40">
-              بقاء
+              أساسي
             </span>
             <span className="truncate flex-1">تموينات أساسية</span>
             <span className="text-muted text-xs shrink-0">وسيط الشهر</span>
@@ -499,7 +499,7 @@ function LiquidGauge({ score }: { score: number }) {
 }
 
 // monthly money flow, shared by the flow bar and the plan projection.
-// Transfers are money MOVEMENT (own accounts, family, wallets) — not consumption.
+// Transfers are money MOVEMENT (own accounts, family, wallets)، not consumption.
 function flowNumbers(result: Result) {
   const months = result.stats.months || 1;
   const debits = result.transactions.filter((t) => t.amount > 0);
@@ -528,7 +528,7 @@ function FlowBar({ result }: { result: Result }) {
     const leak = result.monthlyLeakSar;
     return [
       { label: "التزامات وفواتير", sar: totalOut - discOut, color: "#3d5a80" },
-      { label: "استهلاك واعٍ", sar: Math.max(0, discOut - leak), color: "var(--teal-dim)" },
+      { label: "إنفاق منضبط", sar: Math.max(0, discOut - leak), color: "var(--teal-dim)" },
       { label: "تسريبات", sar: leak, color: "var(--danger)" },
       { label: "تحويلات لحسابات أخرى", sar: transferOut, color: "#6b5b95" },
       { label: "المتبقي للادخار", sar: baselineSaving, color: "var(--teal)" },
@@ -594,14 +594,14 @@ function Heatmap({ transactions }: { transactions: ClassifiedTransaction[] }) {
     return { grid, max, hot };
   }, [transactions]);
 
-  // statement PDFs carry dates only — without times this analysis is impossible
+  // statement PDFs carry dates only، without times this analysis is impossible
   if (max === 0) {
     return (
       <div className="text-center py-8 px-4 border border-dashed border-navy-soft rounded-xl">
         <div className="text-3xl mb-3">🕐</div>
         <p className="mb-1">كشفك لا يتضمن وقت العمليات، لذا لا يمكن تحليل توقيت قراراتك</p>
         <p className="text-muted text-sm">
-          كشوف الـ PDF تحمل التاريخ فقط — ملف CSV من تطبيق البنك يتضمن الوقت عادةً ويفعّل هذا التحليل
+          كشوف الـ PDF تحمل التاريخ فقط، ملف CSV من تطبيق البنك يتضمن الوقت عادةً ويفعّل هذا التحليل
         </p>
       </div>
     );
@@ -651,7 +651,7 @@ function Heatmap({ transactions }: { transactions: ClassifiedTransaction[] }) {
       <div className="flex items-center justify-between mt-4 flex-wrap gap-3">
         {max > 0 && (
           <p className="text-sm">
-            🔥 نقطتك الساخنة: <b>{WEEKDAYS[hot[1]]} {BANDS[hot[0]].label}</b> —{" "}
+            🔥 نقطتك الساخنة: <b>{WEEKDAYS[hot[1]]} {BANDS[hot[0]].label}</b>، {" "}
             <span className="num">{sar(max)}</span> خلال فترة التحليل
           </p>
         )}
@@ -772,7 +772,7 @@ function DeltaBanner({ result }: { result: Result }) {
         {deltaPct}٪
       </b>{" "}
       ({sar(prev.monthlyLeakSar)} ← {sar(result.monthlyLeakSar)})
-      {better ? " — استمر، الخطة تعمل." : " — راجع خطتك أدناه."}
+      {better ? "، استمر، الخطة تعمل." : "، راجع خطتك أدناه."}
     </div>
   );
 }
@@ -834,10 +834,10 @@ function PlanSection({ result, savings }: { result: Result; savings: number | nu
 
   return (
     <div className="bg-navy-card rounded-2xl p-8 mb-6 fade-up border border-teal/40">
-      <h2 className="text-xl font-bold mb-1">خطة الاسترداد — الدرع أولاً، ثم أهدافك 🛡</h2>
+      <h2 className="text-xl font-bold mb-1">خطة التوفير، الصندوق أولاً، ثم أهدافك 🛡</h2>
       <p className="text-muted text-sm mb-6">
-        درع الطوارئ هدفك الأول دائماً: يأخذ ٧٠٪ من ادخارك حتى يكتمل، وأهدافك تتقاسم الباقي
-        بنسبك أنت. فعّل أو عطّل كل إصلاح وشاهد أثره فوراً — الأرقام واقعية، لا نَعِد بالمستحيل.
+        صندوق الطوارئ هدفك الأول دائماً: يأخذ ٧٠٪ من ادخارك حتى يكتمل، وأهدافك تتقاسم الباقي
+        بنسبك أنت. فعّل أو عطّل كل إصلاح وشاهد أثره فوراً، الأرقام واقعية، لا نَعِد بالمستحيل.
       </p>
 
       <ShieldGoalsPanel
@@ -853,7 +853,7 @@ function PlanSection({ result, savings }: { result: Result; savings: number | nu
       />
 
       <p className="text-muted text-sm mb-6 text-center num" data-testid="plan-summary">
-        ادخارك الشهري بخطتك: {sar(withPlan)} — منها +{sar(recovered)} استرداد واقعي من{" "}
+        ادخارك الشهري بخطتك: {sar(withPlan)}، منها +{sar(recovered)} توفير واقعي من{" "}
         {selected.size} إصلاحات مفعّلة ={" "}
         <b className="text-teal">
           +{Math.round(runwayDaysBought(recovered, plan.floorSar))} يوم أمان إضافي
@@ -920,7 +920,7 @@ function PlanSection({ result, savings }: { result: Result; savings: number | nu
                   </span>
                 </div>
                 <p className="text-muted text-sm">{f.howAr}</p>
-                {/* the leak, re-priced in survival time — beside the SAR figure, never instead */}
+                {/* the leak, re-priced in survival time، beside the SAR figure, never instead */}
                 <p className={`text-xs mt-1 ${on ? "text-teal" : "text-muted"}`}>
                   {f.titleAr} = {Math.round(runwayDaysBought(f.recoverableSar, plan.floorSar))} يوم
                   إضافي من الأمان شهرياً
@@ -946,12 +946,12 @@ function PlanSection({ result, savings }: { result: Result; savings: number | nu
         </button>
         {committed && !saved && (
           <span className="text-muted text-sm">
-            لديك خطة معتمدة منذ <span className="num">{committed.date}</span> — عدّلها واعتمدها من جديد
+            لديك خطة معتمدة منذ <span className="num">{committed.date}</span>، عدّلها واعتمدها من جديد
           </span>
         )}
         {saved && (
           <span className="text-teal text-sm">
-            سنقارن تحليلك القادم بهذه الخطة — ارفع كشفاً جديداً الشهر القادم لترى تقدمك
+            سنقارن تحليلك القادم بهذه الخطة، ارفع كشفاً جديداً الشهر القادم لترى تقدمك
           </span>
         )}
       </div>
@@ -980,17 +980,17 @@ function ShieldGoalsPanel({
 
   return (
     <div className="bg-navy-soft rounded-xl p-5 mb-6">
-      {/* shield: goal #1, structurally — sized in months of the user's own floor */}
+      {/* shield: goal #1, structurally، sized in months of the user's own floor */}
       <div className="flex flex-wrap items-center gap-3 mb-2">
         <span className="text-2xl">🛡</span>
         <div className="flex-1 min-w-40">
-          <div className="font-bold">درع الطوارئ — الهدف رقم ١ دائماً</div>
+          <div className="font-bold">صندوق الطوارئ، الهدف رقم ١ دائماً</div>
           <div className="text-muted text-xs">
-            <span className="num">{plan.shield.months}</span> أشهر من أرضية بقائك ={" "}
+            <span className="num">{plan.shield.months}</span> أشهر من مصاريفك الأساسية ={" "}
             <span className="num">{sar(plan.shield.targetSar)}</span>
           </div>
         </div>
-        <div className="flex items-center gap-1" role="group" aria-label="حجم الدرع بالأشهر">
+        <div className="flex items-center gap-1" role="group" aria-label="حجم الصندوق بالأشهر">
           {[1, 2, 3, 4, 5, 6].map((n) => (
             <button
               key={n}
@@ -1014,12 +1014,12 @@ function ShieldGoalsPanel({
       </div>
       <p className="text-muted text-xs mb-5">
         {shieldDone ? (
-          <>الدرع مكتمل من سيولتك الحالية ✓ — أهدافك تتقاسم كامل ادخارك الشهري</>
+          <>الصندوق مكتمل من سيولتك الحالية ✓، أهدافك تتقاسم كامل ادخارك الشهري</>
         ) : (
           <>
             مموّل <span className="num">{Math.round(plan.shield.fundedPct)}٪</span> من سيولتك الحالية
             {plan.shield.etaMonths !== null && (
-              <> — يكتمل خلال <span className="num">{plan.shield.etaMonths}</span> شهراً
+              <>، يكتمل خلال <span className="num">{plan.shield.etaMonths}</span> شهراً
               (يأخذ ٧٠٪ من ادخارك، وأهدافك تتقاسم ٣٠٪ الباقية)</>
             )}
           </>
@@ -1039,7 +1039,7 @@ function ShieldGoalsPanel({
                 <span className="w-40 text-left text-xs">
                   {g.etaMonths !== null ? (
                     <>
-                      <span className="text-teal font-bold num">{g.etaMonths}</span> شهراً —{" "}
+                      <span className="text-teal font-bold num">{g.etaMonths}</span> شهراً، {" "}
                       <span className="num">{sar(g.monthlySar)}</span>/شهر الآن
                     </>
                   ) : (
@@ -1154,7 +1154,7 @@ function smoothArea(pts: [number, number][], baseline: number): { line: string; 
   return { line: d, area };
 }
 
-// موجة الراتب — RTL-native: salary day on the right, the month flows leftward.
+// موجة الراتب، RTL-native: salary day on the right, the month flows leftward.
 // The story is annotated on the chart itself: the burn zone, the peak, the fade.
 function PaydayCurve({
   transactions, salaryDates,
@@ -1163,7 +1163,7 @@ function PaydayCurve({
     const salaryDays = salaryDates.map((d) => new Date(d + "T00:00:00").getTime() / 86400000);
     const b = new Array(30).fill(0);
     for (const t of transactions) {
-      // discretionary only — the curve's story is behavioral burn, not bills/transfers
+      // discretionary only، the curve's story is behavioral burn, not bills/transfers
       if (t.amount <= 0 || !DISCRETIONARY.has(t.category as Category)) continue;
       const td = new Date(t.date + "T00:00:00").getTime() / 86400000;
       const candidates = salaryDays.filter((s) => s <= td);
@@ -1288,7 +1288,7 @@ function CategoryChart({ categoryMonthly }: { categoryMonthly: Record<string, nu
       </div>
       <div className="flex gap-5 mt-4 text-xs text-muted">
         <span className="flex items-center gap-1.5">
-          <span className="w-2.5 h-2.5 rounded-sm inline-block bg-danger" /> استهلاكي — هنا تعيش التسريبات
+          <span className="w-2.5 h-2.5 rounded-sm inline-block bg-danger" /> استهلاكي، هنا تعيش التسريبات
         </span>
         <span className="flex items-center gap-1.5">
           <span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ background: "#3d5a80" }} /> التزامات

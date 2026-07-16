@@ -56,10 +56,10 @@ type Effort = {
 };
 
 const EFFORTS: Record<string, Effort> = {
-  instant: { order: 0, badgeAr: "سهل — دقيقتان اليوم", recoveryRate: 1.0 },
+  instant: { order: 0, badgeAr: "سهل، دقيقتان اليوم", recoveryRate: 1.0 },
   auto: { order: 1, badgeAr: "إعداد لمرة واحدة", recoveryRate: 0.8 },
   rule: { order: 2, badgeAr: "قاعدة يومية بسيطة", recoveryRate: 0.6 },
-  habit: { order: 3, badgeAr: "تغيير عادة — الأصعب والأكبر", recoveryRate: 0.5 },
+  habit: { order: 3, badgeAr: "تغيير عادة، الأصعب والأكبر", recoveryRate: 0.5 },
 };
 
 const FIX_META: Record<string, { effort: keyof typeof EFFORTS; howAr: string }> = {
@@ -73,7 +73,7 @@ const FIX_META: Record<string, { effort: keyof typeof EFFORTS; howAr: string }> 
   },
   payday_spike: {
     effort: "auto",
-    howAr: "اضبط تحويلاً تلقائياً لحساب الادخار صباح يوم الراتب — قبل أن يبدأ الإنفاق.",
+    howAr: "اضبط تحويلاً تلقائياً لحساب الادخار صباح يوم الراتب، قبل أن يبدأ الإنفاق.",
   },
   late_night: {
     effort: "rule",
@@ -81,11 +81,11 @@ const FIX_META: Record<string, { effort: keyof typeof EFFORTS; howAr: string }> 
   },
   micro_leak: {
     effort: "rule",
-    howAr: "خصص مبلغاً أسبوعياً ثابتاً للمشتريات الصغيرة — عندما ينتهي، ينتهي.",
+    howAr: "خصص مبلغاً أسبوعياً ثابتاً للمشتريات الصغيرة، عندما ينتهي، ينتهي.",
   },
   delivery_streak: {
     effort: "habit",
-    howAr: "سقف أسبوعي: طلبا توصيل فقط — وانقل تطبيقات التوصيل خارج الشاشة الرئيسية.",
+    howAr: "سقف أسبوعي: طلبا توصيل فقط، وانقل تطبيقات التوصيل خارج الشاشة الرئيسية.",
   },
 };
 
@@ -96,7 +96,7 @@ export type Fix = {
   badgeAr: string;
   order: number;
   leakMonthlySar: number;
-  recoverableSar: number; // leak × recovery rate — the honest number
+  recoverableSar: number; // leak × recovery rate، the honest number
 };
 
 export function buildFixes(leaks: Leak[]): Fix[] {

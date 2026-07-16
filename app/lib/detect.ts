@@ -1,4 +1,4 @@
-// The leak-detection engine. Thresholds are research-backed — see docs/RESEARCH.md.
+// The leak-detection engine. Thresholds are research-backed، see docs/RESEARCH.md.
 // Works entirely offline on classified transactions; Claude only writes the narrative.
 //
 // Honesty rule: every transaction is attributed to at most ONE leak (priority
@@ -88,7 +88,7 @@ export function runEngine(input: ClassifiedTransaction[]): EngineOutput {
   for (const t of debits)
     byMerchant.set(t.merchant, [...(byMerchant.get(t.merchant) ?? []), t]);
 
-  // Bills (rent, telecom, utilities, ATM habits) also recur — they're commitments,
+  // Bills (rent, telecom, utilities, ATM habits) also recur، they're commitments,
   // not leaks. Only digital subs and AI-unresolved merchants count as leak candidates.
   const SUB_CATEGORIES = new Set(["subscriptions_digital", "other", "entertainment"]);
   const subs: { merchant: string; monthlySar: number; count: number; txns: ClassifiedTransaction[] }[] = [];
@@ -139,7 +139,7 @@ export function runEngine(input: ClassifiedTransaction[]): EngineOutput {
     candidates.push({ kind: "late_night", txns: lateNight, meta: {} });
   }
 
-  // ---- 3. Delivery streak (≥4 orders / rolling 7 days) — counterfactual: 2/week
+  // ---- 3. Delivery streak (≥4 orders / rolling 7 days)، counterfactual: 2/week
   const delivery = debits
     .filter((t) => t.category === "food_delivery")
     .sort((a, b) => day(a) - day(b));
@@ -163,7 +163,7 @@ export function runEngine(input: ClassifiedTransaction[]): EngineOutput {
     });
   }
 
-  // ---- 4. Payday burn: discretionary in days 0–4 after salary — counterfactual: excess over median
+  // ---- 4. Payday burn: discretionary in days 0–4 after salary، counterfactual: excess over median
   const salaryDays = salaries.map(day);
   const windowTxns = disc.filter(
     (t) =>
@@ -185,7 +185,7 @@ export function runEngine(input: ClassifiedTransaction[]): EngineOutput {
     });
   }
 
-  // ---- 5. Micro-leak (< SAR 100 discretionary, >15/month) — excludes delivery/subs (own detectors)
+  // ---- 5. Micro-leak (< SAR 100 discretionary, >15/month)، excludes delivery/subs (own detectors)
   const micro = disc.filter(
     (t) =>
       t.amount < 100 &&
@@ -235,7 +235,7 @@ export function runEngine(input: ClassifiedTransaction[]): EngineOutput {
       titleAr: "اشتراكات متداخلة",
       detailAr: `لديك ${digitalSubs.length} اشتراكات رقمية متزامنة. إلغاء الأقل استخداماً (مثلاً ${zombie.merchant}) يوفر ${fmt(
         zombie.monthlySar * 12
-      )} ر.س سنوياً دون أن تفقد شيئاً تستخدمه فعلاً — الدراسات تظهر أن الشركات تضاعف أرباحها لأن المشتركين لا يعيدون النظر.`,
+      )} ر.س سنوياً دون أن تفقد شيئاً تستخدمه فعلاً، الدراسات تظهر أن الشركات تضاعف أرباحها لأن المشتركين لا يعيدون النظر.`,
       monthlyCostSar: 0,
       transactions: zombie.txns.map((t) => t.id),
       severity: "medium",
@@ -306,7 +306,7 @@ export function runEngine(input: ClassifiedTransaction[]): EngineOutput {
           titleAr: "اشتراكات متكررة تعمل بصمت",
           detailAr: `${c.meta.count} اشتراكات شهرية ثابتة (${c.meta.names}) تكلفك ${fmt(
             cost
-          )} ر.س شهرياً — أي ${fmt(cost * 12)} ر.س سنوياً. الدراسات تشير إلى أن الناس يقدّرون اشتراكاتهم بأقل من ثلث قيمتها الفعلية.`,
+          )} ر.س شهرياً، أي ${fmt(cost * 12)} ر.س سنوياً. الدراسات تشير إلى أن الناس يقدّرون اشتراكاتهم بأقل من ثلث قيمتها الفعلية.`,
           monthlyCostSar: cost,
           transactions: ids,
           severity: cost > 150 ? "high" : "medium",
@@ -328,7 +328,7 @@ export function runEngine(input: ClassifiedTransaction[]): EngineOutput {
           titleAr: "عادة التوصيل",
           detailAr: `${c.meta.perWeek} طلبات توصيل أسبوعياً بمتوسط ${c.meta.avg} ر.س للطلب. لو اكتفيت بطلبين أسبوعياً لوفّرت ${fmt(
             cost
-          )} ر.س شهرياً — أي ${fmt(cost * 12)} ر.س سنوياً.`,
+          )} ر.س شهرياً، أي ${fmt(cost * 12)} ر.س سنوياً.`,
           monthlyCostSar: cost,
           transactions: ids,
           severity: cost > 400 ? "high" : "medium",
@@ -337,7 +337,7 @@ export function runEngine(input: ClassifiedTransaction[]): EngineOutput {
         return {
           kind: c.kind,
           titleAr: "حرق ما بعد الراتب",
-          detailAr: `${c.meta.sharePct}٪ من إنفاقك الاستهلاكي يحدث في أول ٥ أيام بعد الراتب — بزيادة ${fmt(
+          detailAr: `${c.meta.sharePct}٪ من إنفاقك الاستهلاكي يحدث في أول ٥ أيام بعد الراتب، بزيادة ${fmt(
             cost
           )} ر.س شهرياً فوق معدلك الطبيعي. هذا هو «تأثير يوم الراتب» الموثّق علمياً، ويحدث حتى لأصحاب الأرصدة المرتفعة.`,
           monthlyCostSar: cost,
@@ -350,7 +350,7 @@ export function runEngine(input: ClassifiedTransaction[]): EngineOutput {
           titleAr: "نزيف المبالغ الصغيرة",
           detailAr: `${c.meta.perMonth} عملية صغيرة (أقل من ١٠٠ ر.س) شهرياً، مجموعها ${fmt(
             cost
-          )} ر.س شهرياً — تبدو تافهة، لكنها ${fmt(cost * 12)} ر.س في السنة.`,
+          )} ر.س شهرياً، تبدو تافهة، لكنها ${fmt(cost * 12)} ر.س في السنة.`,
           monthlyCostSar: cost,
           transactions: ids,
           severity: cost > 500 ? "high" : "low",
@@ -359,7 +359,7 @@ export function runEngine(input: ClassifiedTransaction[]): EngineOutput {
         return {
           kind: "bank_fees",
           titleAr: "رسوم بنكية",
-          detailAr: `${fmt(cost * 12)} ر.س سنوياً رسوم وعمولات — هذا التسريب الوحيد الذي لا يحتاج نقاشاً: كل ريال منه قابل للاسترداد بتغيير طريقة الاستخدام.`,
+          detailAr: `${fmt(cost * 12)} ر.س سنوياً رسوم وعمولات، هذا التسريب الوحيد الذي لا يحتاج نقاشاً: كل ريال منه توفير ممكن بتغيير طريقة الاستخدام.`,
           monthlyCostSar: cost,
           transactions: ids,
           severity: "low",

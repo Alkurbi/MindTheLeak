@@ -1,6 +1,6 @@
 // Claude layer (server-only): merchant classification for the rules-engine tail,
 // and the Arabic behavioral narrative. Falls back to deterministic templates when
-// no API key is set or the call fails — the demo never depends on the network.
+// no API key is set or the call fails، the demo never depends on the network.
 
 import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
@@ -45,7 +45,7 @@ function client(): Anthropic | null {
 const MerchantBatch = z.object({
   results: z.array(
     z.object({
-      merchant: z.string(), // echo back exactly — prevents index misalignment
+      merchant: z.string(), // echo back exactly، prevents index misalignment
       reasoning: z.string(), // in-schema chain of thought before the answer
       category: z.enum(CATEGORIES),
       confidence: z.number(),
@@ -85,7 +85,7 @@ export async function classifyMerchants(
           "You classify merchant names from Saudi bank statements into spending categories. " +
           "Merchants may be Arabic, English, or transliterated Arabic (e.g. MTAAM = مطعم = restaurant, SHRKT = شركة = company). " +
           "Echo each merchant string back EXACTLY as given. Think briefly in `reasoning` before choosing. " +
-          "Use confidence < 0.5 when genuinely unsure — never guess confidently.",
+          "Use confidence < 0.5 when genuinely unsure، never guess confidently.",
         messages: [
           {
             role: "user",
@@ -118,16 +118,16 @@ const Narrative = z.object({
 });
 
 const FRAMING_RULES = `أنت محلل سلوك مالي يكتب تقريراً شخصياً بالعربية. قواعد الكتابة (مبنية على أبحاث الاقتصاد السلوكي):
-1. الأرقام الملموسة الشخصية هي كل شيء — لا عموميات أبداً.
+1. الأرقام الملموسة الشخصية هي كل شيء، لا عموميات أبداً.
 2. حوّل التسريبات الصغيرة إلى أرقام سنوية ("٢٣ ر.س أسبوعياً = ١١٩٦ ر.س سنوياً"). لا تقل أبداً "فقط X ريال يومياً".
 3. دقة مرحة بلا وعظ: "رابع طلب هذا الأسبوع، الساعة ٢:٠٧ فجراً" وليس "أنت مسرف".
-4. اشرح الآلية النفسية ليفهم القارئ أن السلوك طبيعي وموثق: "هذا تأثير يوم الراتب — يحدث حتى لأصحاب الدخول المرتفعة".
-5. لا مقارنات اجتماعية إطلاقاً ("الناس مثلك ينفقون...") — الأبحاث تثبت أنها تأتي بنتائج عكسية.
+4. اشرح الآلية النفسية ليفهم القارئ أن السلوك طبيعي وموثق: "هذا تأثير يوم الراتب، يحدث حتى لأصحاب الدخول المرتفعة".
+5. لا مقارنات اجتماعية إطلاقاً ("الناس مثلك ينفقون...")، الأبحاث تثبت أنها تأتي بنتائج عكسية.
 6. كل نصيحة يجب أن تكون: فعلاً واحداً محدداً + رقم توفير محدد شهرياً أو سنوياً.
 7. الهدف تمكين القارئ، لا إشعاره بالذنب. اختم بما يكسبه، لا بما يخسره.
 
 المطلوب:
-- headlineInsightAr: جملة واحدة صادمة ومحددة — أقوى نمط سببي في البيانات (وقت + سلوك + رقم). هذه الجملة هي "لحظة الوعي" الرئيسية.
+- headlineInsightAr: جملة واحدة صادمة ومحددة، أقوى نمط سببي في البيانات (وقت + سلوك + رقم). هذه الجملة هي "لحظة الوعي" الرئيسية.
 - narrativeAr: تقرير من ٣ فقرات قصيرة: (١) النمط الأبرز وآليته النفسية، (٢) التسريبات الأخرى بالأرقام، (٣) الصورة الكبيرة: ماذا يعني استرداد هذا المبلغ سنوياً بشكل ملموس (رحلة عمرة، قسط سيارة، صندوق طوارئ).
 - tipsAr: ٣ أفعال محددة مرتبة بالأثر، كل واحد بصيغة "افعل X → توفر Y ر.س شهرياً".`;
 
@@ -144,10 +144,10 @@ export async function generateNarrative(
   if (anthropic) {
     try {
       const goalLine = goal
-        ? `\n\nهدف المستخدم المعلن: «${goal.label}» بمبلغ ${goal.targetSar} ر.س. اربط كل تسريب وكل نصيحة بهذا الهدف تحديداً (الأبحاث: ربط التذكير بهدف مسمى يضاعف فعاليته) — مثلاً "هذا التسريب وحده يؤخر ${goal.label} بـ N أشهر".`
+        ? `\n\nهدف المستخدم المعلن: «${goal.label}» بمبلغ ${goal.targetSar} ر.س. اربط كل تسريب وكل نصيحة بهذا الهدف تحديداً (الأبحاث: ربط التذكير بهدف مسمى يضاعف فعاليته)، مثلاً "هذا التسريب وحده يؤخر ${goal.label} بـ N أشهر".`
         : "";
       const resilienceLine = summary
-        ? `\n\nنموذج الصمود المحسوب من كشف المستخدم (resilience): أرضية بقائه ${summary.floorSar} ر.س شهرياً، وسيولته تغطي ${summary.runwayMonths} شهر لو انقطع دخله اليوم${summary.firstBreak ? `، وأول ما ينكسر: ${summary.firstBreak.labelAr} بعد ${summary.firstBreak.dayOffset} يوماً` : ""}. درع الطوارئ (${summary.shield.months} أشهر من أرضيته) مموّل ${summary.shield.fundedPct}٪. اربط التقرير بهذه الأرقام: افتح بمدة الأمان، وقدّم كل تسريب مسترد كأيام أمان إضافية تُشترى.`
+        ? `\n\nنموذج الأمان المالي المحسوب من كشف المستخدم (resilience): مصاريفه الأساسية ${summary.floorSar} ر.س شهرياً، وسيولته تغطي ${summary.runwayMonths} شهر لو انقطع دخله اليوم${summary.firstBreak ? `، وأول ما ينكسر: ${summary.firstBreak.labelAr} بعد ${summary.firstBreak.dayOffset} يوماً` : ""}. صندوق الطوارئ (${summary.shield.months} أشهر من مصاريفه الأساسية) مموّل ${summary.shield.fundedPct}٪. اربط التقرير بهذه الأرقام: افتح بمدة الأمان، وقدّم كل تسريب موفَّر كأيام أمان إضافية تُشترى.`
         : "";
       const response = await anthropic.messages.parse({
         model: MODEL,
@@ -172,7 +172,7 @@ export async function generateNarrative(
   return { ...templateNarrative(stats, leaks, monthlyLeakSar, goal, summary), aiPowered: false };
 }
 
-// Deterministic fallback — built from the same engine numbers, so the demo
+// Deterministic fallback، built from the same engine numbers, so the demo
 // works offline and the "wow" line is always available.
 function templateNarrative(
   stats: Stats,
@@ -184,36 +184,36 @@ function templateNarrative(
   const fmt = (n: number) => Math.round(n).toLocaleString("en-US");
   const top = leaks[0];
   const resilienceParagraph = resilience
-    ? `لو انقطع دخلك اليوم، سيولتك (${fmt(resilience.savingsSar)} ر.س) تغطي أرضية بقائك (${fmt(
+    ? `لو انقطع دخلك اليوم، سيولتك (${fmt(resilience.savingsSar)} ر.س) تغطي مصاريفك الأساسية (${fmt(
         resilience.floorSar
       )} ر.س شهرياً) لمدة ${resilience.runwayMonths} شهر فقط${
         resilience.firstBreak
-          ? ` — وأول ما ينكسر: ${resilience.firstBreak.labelAr} بعد ${resilience.firstBreak.dayOffset} يوماً`
+          ? `، وأول ما ينكسر: ${resilience.firstBreak.labelAr} بعد ${resilience.firstBreak.dayOffset} يوماً`
           : ""
-      }. درع الطوارئ المستهدف (${resilience.shield.months} أشهر من أرضيتك = ${fmt(
+      }. صندوق الطوارئ المستهدف (${resilience.shield.months} أشهر من مصاريفك الأساسية = ${fmt(
         resilience.shield.targetSar
-      )} ر.س) مموّل ${resilience.shield.fundedPct}٪ — وكل تسريب تسترده أدناه يشتري أياماً إضافية من هذا الأمان.`
+      )} ر.س) مموّل ${resilience.shield.fundedPct}٪، وكل تسريب تسترده أدناه يشتري أياماً إضافية من هذا الأمان.`
     : null;
   const goalSentence =
     goal && monthlyLeakSar > 0
-      ? ` هدفك «${goal.label}» (${fmt(goal.targetSar)} ر.س) يبتعد عنك كل شهر بهذا المقدار — استرداد التسريب وحده يوصلك إليه خلال ${Math.ceil(goal.targetSar / monthlyLeakSar)} شهراً.`
+      ? ` هدفك «${goal.label}» (${fmt(goal.targetSar)} ر.س) يبتعد عنك كل شهر بهذا المقدار، استرداد التسريب وحده يوصلك إليه خلال ${Math.ceil(goal.targetSar / monthlyLeakSar)} شهراً.`
       : "";
 
   const headlineInsightAr =
     stats.paydayWindowSharePct >= 30 && stats.lateNightCountPerMonth >= 3
-      ? `${stats.paydayWindowSharePct}٪ من إنفاقك يحدث في أول ٥ أيام بعد الراتب — ومعظم قراراتك المتهورة تُتخذ بعد الساعة ١٠ مساءً (${Math.round(stats.lateNightCountPerMonth)} عملية شهرياً).`
+      ? `${stats.paydayWindowSharePct}٪ من إنفاقك يحدث في أول ٥ أيام بعد الراتب، ومعظم قراراتك المتهورة تُتخذ بعد الساعة ١٠ مساءً (${Math.round(stats.lateNightCountPerMonth)} عملية شهرياً).`
       : top
       ? top.detailAr
-      : "إنفاقك منضبط نسبياً — لكن التفاصيل أدناه تستحق نظرة.";
+      : "إنفاقك منضبط نسبياً، لكن التفاصيل أدناه تستحق نظرة.";
 
   const narrativeAr = [
     ...(resilienceParagraph ? [resilienceParagraph] : []),
-    `أنت لا تعاني من مشكلة دخل — دخلك ${fmt(stats.monthlyIncomeSar)} ر.س شهرياً. المشكلة في ${fmt(
+    `أنت لا تعاني من مشكلة دخل، دخلك ${fmt(stats.monthlyIncomeSar)} ر.س شهرياً. المشكلة في ${fmt(
       monthlyLeakSar
     )} ر.س تتسرب كل شهر عبر أنماط سلوكية لا تلاحظها: ${leaks
       .slice(0, 3)
       .map((l) => l.titleAr)
-      .join("، ")}. هذه الأنماط موثقة علمياً وتحدث للجميع — الفرق أنك الآن تراها.`,
+      .join("، ")}. هذه الأنماط موثقة علمياً وتحدث للجميع، الفرق أنك الآن تراها.`,
     leaks
       .slice(0, 3)
       .map((l) => l.detailAr)

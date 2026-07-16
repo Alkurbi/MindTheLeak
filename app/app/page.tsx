@@ -9,7 +9,7 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 const STEPS = [
   "قراءة كشف الحساب وتطبيع البيانات",
-  "تصنيف المعاملات — قواعد ثم ذكاء اصطناعي",
+  "تصنيف المعاملات، قواعد ثم ذكاء اصطناعي",
   "كشف الأنماط السلوكية السبعة",
   "كتابة تقريرك الشخصي",
 ];
@@ -46,7 +46,7 @@ export default function Home() {
         if (!res.ok) throw new Error(data.error ?? "خطأ غير متوقع");
         return data as Result;
       });
-      // let the staged progress play out — the reveal deserves a beat
+      // let the staged progress play out، the reveal deserves a beat
       // (skipped for headless automation so screenshots capture the final state)
       const beat = navigator.webdriver ? 0 : 3400;
       const [data] = await Promise.all([work, sleep(beat)]);
@@ -101,12 +101,12 @@ export default function Home() {
             className="display text-3xl md:text-4xl font-bold leading-snug mb-4 fade-up"
             style={{ animationDelay: "0.1s" }}
           >
-            دخلك هو الصنبور —<br />
+            دخلك هو الصنبور، <br />
             والتسريبات تقرر أي كوب يمتلئ أولاً
           </p>
           <p className="text-muted text-lg mb-8 fade-up" style={{ animationDelay: "0.2s" }}>
             كل التطبيقات تخبرك <b className="text-fg">ماذا</b> أنفقت. نحن نخبرك{" "}
-            <b className="text-teal">لماذا لا تستطيع الادخار</b> — وكيف تسترد المبلغ.
+            <b className="text-teal">لماذا لا تستطيع الادخار</b>، وكيف تسترد المبلغ.
           </p>
 
           <div
@@ -137,7 +137,7 @@ export default function Home() {
           {error && <p className="text-danger mt-5">{error}</p>}
 
           <p className="text-muted text-sm mt-5 mb-10 fade-up" style={{ animationDelay: "0.4s" }}>
-            🔒 لا نطلب بيانات دخول بنكية — ملفك يُحلَّل ولا يُخزَّن
+            🔒 لا نطلب بيانات دخول بنكية، ملفك يُحلَّل ولا يُخزَّن
           </p>
 
           {/* the problem, in three numbers */}
@@ -164,13 +164,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* how it works — the same ٠١٠٢٠٣ language as the dashboard */}
+      {/* how it works، the same ٠١٠٢٠٣ language as the dashboard */}
       <section className="border-t border-navy-soft/60">
         <div className="max-w-6xl mx-auto px-6 py-10 grid sm:grid-cols-3 gap-8">
           {[
-            { n: "٠١", t: "ارفع كشف حسابك", d: "ملف CSV من تطبيق بنكك — بدون أي بيانات دخول" },
+            { n: "٠١", t: "ارفع كشف حسابك", d: "ملف CSV من تطبيق بنكك، بدون أي بيانات دخول" },
             { n: "٠٢", t: "نشخّص سلوكك", d: "٧ كواشف تسريب مبنية على أبحاث محكّمة، وذكاء اصطناعي يقرأ ما بين المعاملات" },
-            { n: "٠٣", t: "تستلم خطتك", d: "مرتبطة بهدفك أنت، بأرقام استرداد واقعية — ونتابع تقدمك مع كل كشف جديد" },
+            { n: "٠٣", t: "تستلم خطتك", d: "مرتبطة بهدفك أنت، بأرقام توفير واقعية، ونتابع تقدمك مع كل كشف جديد" },
           ].map((s) => (
             <div key={s.n} className="flex gap-4 items-start">
               <span className="display text-4xl font-bold text-teal/35 leading-none select-none">{s.n}</span>
@@ -246,7 +246,7 @@ function TapAndCups() {
 
 // The single strongest evidence-backed lever: a named goal doubles the
 // effectiveness of every insight (Karlan et al., Management Science 2016).
-// Multiple goals, each with a share of monthly savings — the emergency shield
+// Multiple goals, each with a share of monthly savings، the emergency shield
 // is added automatically as goal #1 and isn't chosen here.
 function GoalStep({ onConfirm }: { onConfirm: (goals: GoalInput[] | null) => void }) {
   const [picked, setPicked] = useState<Set<number>>(new Set([0]));
@@ -265,7 +265,7 @@ function GoalStep({ onConfirm }: { onConfirm: (goals: GoalInput[] | null) => voi
         <div className="max-w-xl w-full fade-up">
           <h2 className="text-3xl font-bold mb-2">كيف نقسم ادخارك بين أهدافك؟</h2>
           <p className="text-muted mb-8">
-            درع الطوارئ يُبنى أولاً تلقائياً — هذه النسب تتقاسم ما بعده. عدّلها كما تريد.
+            صندوق الطوارئ يُبنى أولاً تلقائياً، هذه النسب تتقاسم ما بعده. عدّلها كما تريد.
           </p>
           <div className="space-y-3 mb-6 text-right">
             {shares.map((g, i) => (
@@ -288,7 +288,7 @@ function GoalStep({ onConfirm }: { onConfirm: (goals: GoalInput[] | null) => voi
             ))}
           </div>
           <p className={`text-sm font-bold num mb-6 ${sum === 100 ? "text-teal" : "text-danger"}`}>
-            المجموع: {sum}٪ {sum !== 100 && "— يجب أن يساوي ١٠٠٪"}
+            المجموع: {sum}٪{sum !== 100 && "، يجب أن يساوي ١٠٠٪"}
           </p>
           <div className="flex gap-4 justify-center">
             <button
@@ -310,9 +310,9 @@ function GoalStep({ onConfirm }: { onConfirm: (goals: GoalInput[] | null) => voi
   return (
     <main className="flex-1 flex flex-col items-center justify-center px-6 py-16 text-center">
       <div className="max-w-xl w-full fade-up">
-        <h2 className="text-3xl font-bold mb-2">قبل أن نحلل — ما الذي تدخر له؟</h2>
+        <h2 className="text-3xl font-bold mb-2">قبل أن نحلل، ما الذي تدخر له؟</h2>
         <p className="text-muted mb-8">
-          اختر هدفاً أو أكثر — سنربط كل تسريب بأهدافك أنت. الأبحاث تظهر أن الهدف المسمى يضاعف
+          اختر هدفاً أو أكثر، سنربط كل تسريب بأهدافك أنت. الأبحاث تظهر أن الهدف المسمى يضاعف
           أثر أي نصيحة مالية. المبالغ قابلة للتعديل لاحقاً من لوحتك.
         </p>
 
@@ -352,7 +352,7 @@ function GoalStep({ onConfirm }: { onConfirm: (goals: GoalInput[] | null) => voi
             disabled={picked.size === 0}
             className="bg-teal text-navy font-bold px-10 py-4 rounded-xl text-lg hover:opacity-90 transition disabled:opacity-40"
           >
-            {picked.size > 1 ? "التالي — تقسيم النسب" : "ابدأ التحليل"}
+            {picked.size > 1 ? "التالي، تقسيم النسب" : "ابدأ التحليل"}
           </button>
           <button
             onClick={() => onConfirm(null)}
