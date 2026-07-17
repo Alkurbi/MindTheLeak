@@ -800,6 +800,7 @@ function PlanSection({ result, savings }: { result: Result; savings: number | nu
   const [saved, setSaved] = useState(false);
   const [goals, setGoals] = useState<GoalInput[]>(loadGoals);
   const [shieldMonths, setShieldMonths] = useState<number>(loadShieldMonths);
+  const [openFix, setOpenFix] = useState<string | null>(null);
 
   const { baselineSaving } = flowNumbers(result);
   const recovered = fixes
@@ -848,10 +849,7 @@ function PlanSection({ result, savings }: { result: Result; savings: number | nu
   return (
     <div className="bg-navy-card rounded-2xl p-8 mb-6 fade-up border border-teal/40">
       <h2 className="text-xl font-bold mb-1">خطة التوفير: صندوق الطوارئ أولاً، ثم أهدافك 🛡</h2>
-      <p className="text-muted text-sm mb-6">
-        يُموَّل الصندوق أولاً بـ70٪ من ادخارك حتى يكتمل، ثم تتقاسم أهدافك الباقي بالنسب التي
-        تحددها. فعّل أو عطّل أي إصلاح وشاهد أثره فوراً. الأرقام واقعية ولا نَعِد بالمستحيل.
-      </p>
+      <p className="text-muted text-sm mb-6">فعّل أو عطّل أي إصلاح وشاهد الأثر فوراً.</p>
 
       <ShieldGoalsPanel
         plan={plan}
@@ -922,21 +920,22 @@ function PlanSection({ result, savings }: { result: Result; savings: number | nu
                 />
               </button>
               <div className="flex-1">
-                <div className="flex flex-wrap items-center gap-2 mb-1">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="font-bold">
                     {i + 1}. {f.titleAr}
                   </span>
                   <span className="text-xs bg-navy-card border border-muted/40 text-muted px-2 py-0.5 rounded-full">
                     {f.badgeAr}
                   </span>
+                  <button
+                    onClick={() => setOpenFix(openFix === f.kind ? null : f.kind)}
+                    aria-expanded={openFix === f.kind}
+                    className="text-muted text-xs hover:text-fg transition"
+                  >
+                    {openFix === f.kind ? "كيف ▾" : "كيف ▸"}
+                  </button>
                 </div>
-                <p className="text-muted text-sm">{f.howAr}</p>
-                {/* the leak, re-priced in survival time، beside the SAR figure, never instead */}
-                {Math.round(runwayDaysBought(f.recoverableSar, plan.floorSar)) > 0 && (
-                  <p className={`text-xs mt-1 ${on ? "text-teal" : "text-muted"}`}>
-                    يضيف {nDays(runwayDaysBought(f.recoverableSar, plan.floorSar))} إلى أمانك شهرياً
-                  </p>
-                )}
+                {openFix === f.kind && <p className="text-muted text-sm mt-2">{f.howAr}</p>}
               </div>
               <div className="text-left shrink-0">
                 <div className={`font-bold num ${on ? "text-teal" : "text-muted"}`}>
